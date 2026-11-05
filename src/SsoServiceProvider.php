@@ -9,6 +9,9 @@ class SsoServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->callAfterResolving(\Fayne\CMS\Support\Modules\ModuleRegistry::class, function ($registry): void {
+            $registry->register('sso', 'SSO', \Fayne\Sso\Filament\SsoPlugin::class, ['site', 'platform', 'tenant']);
+        });
         $this->mergeConfigFrom(__DIR__.'/../config/filament-sso.php', 'filament-sso');
         $this->app->singleton('sso', fn ($app) => new SsoManager($app));
     }
